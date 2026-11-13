@@ -1,0 +1,6 @@
+{
+  "name": "GST Calculator",
+  "description": "Calculate and generate GST statements, MDR deductions, daily summaries, and official monthly GST certificates from merchant transaction files.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
