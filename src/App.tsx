@@ -161,14 +161,14 @@ export default function App() {
       reader.onload = (event) => {
         try {
           const data = new Uint8Array(event.target?.result as ArrayBuffer);
-          const workbook = XLSX.read(data, { type: 'array' });
+          const workbook = XLSX.read(data, { type: 'array', cellDates: true });
           const firstSheetName = workbook.SheetNames[0];
           const worksheet = workbook.Sheets[firstSheetName];
           if (!worksheet) {
             alert('The uploaded Excel file seems to be empty.');
             return;
           }
-          const csvText = XLSX.utils.sheet_to_csv(worksheet, { rawNumbers: true });
+          const csvText = XLSX.utils.sheet_to_csv(worksheet, { rawNumbers: true, dateNF: 'yyyy-mm-dd' });
           setRawText(csvText);
           handleParseCsvText(csvText, file.name);
         } catch (err: any) {

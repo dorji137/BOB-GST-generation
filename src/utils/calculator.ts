@@ -46,6 +46,16 @@ export function parseDateString(raw: any): { valid: boolean; formatted: string; 
     return { valid: false, formatted: '', raw: '' };
   }
 
+  // Excel serial date (e.g. 46327 = days since 1899-12-30)
+  if (/^\d{5}(\.\d+)?$/.test(cleanStr)) {
+    const serial = parseFloat(cleanStr);
+    if (serial > 20000 && serial < 80000) {
+      const x = new Date(Date.UTC(1899, 11, 30) + Math.floor(serial) * 86400000);
+      const f = `${x.getUTCFullYear()}-${String(x.getUTCMonth() + 1).padStart(2, '0')}-${String(x.getUTCDate()).padStart(2, '0')}`;
+      return { valid: true, formatted: f, raw: cleanStr };
+    }
+  }
+
   // Try creating a date object
   // Standard format or slash format (e.g. DD/MM/YYYY or YYYY-MM-DD or MM/DD/YYYY)
   const d = new Date(cleanStr);

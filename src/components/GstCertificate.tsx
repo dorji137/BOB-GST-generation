@@ -5,6 +5,7 @@ import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import headerImg from '../assets/header.png';
 import footerImg from '../assets/footer.png';
+import sealImg from '../assets/bob-seal.png';
 
 // Letterhead taken from the official "Header footer format" Word sample (A4 @ 96dpi = 794x1123px)
 const PdfHeader = () => (
@@ -14,6 +15,11 @@ const PdfHeader = () => (
       Digital Banking Services Department
     </div>
   </div>
+);
+
+// Official bank seal stamped at the bottom-right of every page (just above the footer)
+const PdfSeal = ({ size = 78, style = {} }: { size?: number; style?: React.CSSProperties }) => (
+  <img src={sealImg} alt="" style={{ width: size + 'px', height: size + 'px', opacity: 0.92, mixBlendMode: 'multiply', ...style }} />
 );
 
 const PdfFooter = () => (
@@ -492,7 +498,9 @@ export default function GstCertificate({ summary, settings }: GstCertificateProp
                 fontFamily: "'Inter', sans-serif"
               }}>
                 <div style={{ textAlign: 'center', width: '220px' }}>
-                  <div style={{ height: '24px' }}></div>
+                  <div style={{ height: '56px', position: 'relative' }}>
+                    <PdfSeal size={92} style={{ position: 'absolute', left: '64px', top: '-34px' }} />
+                  </div>
                   <div style={{ borderTop: '1px solid #cbd5e1', margin: '4px 0', width: '220px' }} />
                   <div style={{ fontSize: '14px', fontWeight: '700', color: '#1e293b' }}>
                     Authorized Signatory
@@ -609,6 +617,7 @@ export default function GstCertificate({ summary, settings }: GstCertificateProp
               </div>
 
 {/* Official letterhead footer (from Header footer format .docx) */}
+<PdfSeal size={72} style={{ position: 'absolute', right: '70px', bottom: '92px' }} />
 <PdfFooter />
             </div>
           ))}
